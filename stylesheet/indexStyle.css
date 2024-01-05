@@ -1,0 +1,197 @@
+:root {
+  --main-bg-color: #4439db;
+  --main-text-color: #121312;
+  --second-text-color: #bbbec5;
+  --second-bg-color: #5d5add;
+}
+.banner{
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+background-image: url(aboutusbg.avif);   
+background-position: fixed; 
+}
+
+.primary-text {
+  color: var(--main-text-color);
+}
+
+.second-text {
+  color: var(--second-text-color);
+}
+
+.primary-bg {
+  background-color: var(--main-bg-color);
+}
+
+      /* Style for boxes */
+      .box {
+          background-color: white;
+          color : steelblue;
+          transition: transform 0.1s ease;
+
+      }
+     #uploadicon{
+      color: steelblue;
+     }
+     .iconlarge{
+      font-size: 2.5em;
+     }
+.box h3{
+color: steelblue;
+}
+#generate{
+padding-top: 20px;
+padding-left: 20px;
+
+align-items: center;
+padding: 15px 35px;
+cursor:pointer;
+font-size: medium;
+font-family: 'Times New Roman', Times, serif;
+display: block;
+margin: auto;
+background: linear-gradient(to right, skyblue, steelblue);
+border: 0;
+color: black;
+font-weight: bold;
+outline: none;
+border-radius: 30px;
+line-height: top 9px;
+font-size: medium;
+}
+#generate:hover {
+transform: scale(1.05); /* Increase size on hover */
+transition: transform 0.4s; /* Add a smooth transition effect */
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+}
+
+      /* Style for icons */
+      .box i {
+          color: steelblue;
+      }
+      .box:hover {
+        background-color: steelblue;
+    }
+    
+    .box:hover i, .box:hover h3 {
+        color: white;
+    }
+.secondary-bg {
+  background-color: var(--second-bg-color);
+}
+
+.rounded-full {
+  border-radius: 100%;
+}
+
+#wrapper {
+  overflow-x: hidden;
+background-size: cover;
+}
+.container {
+  display: flex;
+}
+
+.container img {
+  width: 500px; /* Adjust the width as needed */
+  height: 400px; /* Maintain aspect ratio */
+  margin-left: 580px; /* Add spacing between the image and content */
+  margin-top: -400px;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+#menu-toggle {
+  cursor: pointer;
+}
+
+.list-group-item {
+  border: none;
+  padding: 20px 30px;
+}
+
+.list-group-item.active {
+  background-color: transparent;
+  color: var(--main-text-color);
+  font-weight: bold;
+  border: none;
+}
+.icon-circle {
+  background-color: steelblue; /* Change to your desired color */
+}
+.list-group-item.list-group-item-action.bg-transparent.second-text.active {
+text-decoration: none !important;
+}
+.custom-navbar {
+background-color: white;
+}
+
+.list-group-item.list-group-item-action.bg-transparent.second-text.active:hover {
+text-decoration: none !important;
+}
+.fs-2-primary-text{
+color: steelblue;
+
+} #sidebar-wrapper {
+background-color: white;
+}
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+.table-container {
+  padding-left: 250px;
+  margin-top: 50px;
+}
+.newbutton{
+float: left;
+margin-left: 26px;
+margin-top: 50px;
+size: 80px;
+background-color: black;
+color:steelblue;
+border-radius: 10px;
+font-weight: bold;
+}
+.table{
+padding-left: 250px;
+text-align: center;
+}
