@@ -1,63 +1,47 @@
-# AI-Alzheimer-Detection website using deep learning 
-Project Description
-Alzheimer's Disease Classification from MRI Images
-This project aims to develop a neural network model for the accurate classification of Alzheimer's disease stages using Magnetic Resonance Imaging (MRI) scans. Alzheimer's disease progression exhibits distinct stages that can be identified through medical imaging.
+Alzheimer's Disease Classification from MRI Images:
 
+This project focuses on building a powerful neural network model to accurately classify Alzheimer's disease stages using Magnetic Resonance Imaging (MRI) scans. Alzheimer's disease exhibits identifiable stages that can be discerned through medical imaging, and this project aims to leverage deep learning to enhance classification accuracy.
 
+Objective
+The primary objective is to develop and deploy a deep learning model capable of precisely predicting Alzheimer's disease stages by analyzing MRI scans. The model categorizes scans into stages such as NonDemented, Very Mild Demented, Mild Demented, and Moderate Demented.
 
-Objective:
-The primary goal is to create and deploy a deep learning model capable of accurately predicting Alzheimer's disease stages by analyzing MRI scans. The model is designed to categorize scans into different stages: NonDemented, Very Mild Demented, Mild Demented, and Moderate Demented.
-
-
-                
 Key Features:
-Data Preparation: Utilize MRI images to build a comprehensive dataset for model training and validation.
 
-Neural Network Model: Implement a deep learning architecture (such as EfficientNetB0) for robust image classification.
+Data Preparation
+Utilize MRI images to construct a comprehensive dataset for effective model training and validation.
 
-Model Training: Train the neural network using labeled MRI images to predict disease progression stages.
+Neural Network Model
+Implemented a deep learning architecture, such as CNN, to achieve robust image classification.
 
-Evaluation: Assess model performance using accuracy metrics on test data.
+Model Training
+Trained the neural network using labeled MRI images to predict different disease progression stages and saved it to use in website.
 
-Visualization: Visualize training metrics and insights into the model's learning process.
+Web Interface
+Develop a user-friendly web application enabling users to interact with the trained model. Users can upload MRI images for disease classification, and the web interface encompasses features like patient record management, MRI upload, report generation, and more.
 
-Deployment: Save the trained model for future use or deployment in clinical settings.
+Project Structure
+Data Collection:
 
-Web Interface: Develop a user-friendly web application to interact with the trained model, allowing users to upload MRI images for disease classification.The web has multiple features like record management of patient ,uploading mri ,generating report etc
+Gather MRI scans with corresponding stage labels (from Kaggle or other reliable sources).
 
+Data Processing:
+Preprocess the images, convert them to an appropriate format, and split them into training and test sets.
 
-Project Structure:
-Data Collection: Gather MRI scans with corresponding stage labels.(from kaggle)
+Model Development:
+Create and train a neural network model on the prepared dataset.
 
-Data Processing: Preprocess the images, convert to an appropriate format, and split into training and test sets.
+Model Deployment:
 
-Model Development: Create and train a neural network model on the prepared dataset.
+Save the trained model for potential deployment or future use.
 
-Model Evaluation: Assess the model's accuracy and performance on test data.
+Web Interface Development:
 
-Visualization: Display visualizations of training metrics and accuracy for analysis.
-
-Model Deployment: Save the trained model for potential deployment or future use.
-
-Web Interface Development: Design and develop a user-friendly web interface allowing users to upload MRI images and obtain disease classification results.
-
-
-Technologies Used:
-
+Design and develop a user-friendly web interface allowing users to upload MRI images, obtain disease classification results, and generate reports.
+Technologies Used
 Python
-
 Keras with TensorFlow backend
-
 OpenCV for image processing
-
-cnn for the base model architecture
-
-HTML/CSS/JavaScript/bootstrap for web interface development
-
-
-Web Interface Details:
-The project includes the development of a web interface that enables users to interact with the trained model conveniently. Users can upload MRI images through the interface, and the model will provide predictions regarding Alzheimer's disease stages based on the uploaded images and also can generate report.
-
-Contributions:
-Contributions, enhancements, and collaborations are welcome. Fork the repository, make improvements, and create pull requests to further enhance the project.
-
+CNN for the base model architecture
+HTML/CSS/JavaScript/Bootstrap for web interface development
+Web Interface Details
+The project includes a well-crafted web interface that facilitates user interaction with the trained model. Users can seamlessly upload MRI images, and the model provides predictions on Alzheimer's disease stages. Additionally, the web interface incorporates features for patient record management, MRI uploading, report generation, and more.
