@@ -1,17 +1,128 @@
-
 <?php
 session_start();
-$message='';
-if(isset($_SESSION['email_alert'])){
-    $message="Email ID Already Exists!!";
+
+include "connect2.php";
+
+if (isset($_POST['login'])) {
+    $email = $_POST['email']; // Corrected variable name
+    $password = $_POST['password'];
+    $usertype = $_POST["usertype"];
+
+    $sqlLogin = "SELECT * FROM registration WHERE email ='".$email."' AND password = '".$password."' AND status = 'active'";
+    $resultLogin = mysqli_query($con, $sqlLogin);
+
+    if (mysqli_num_rows($resultLogin) > 0) {
+        $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : '';
+
+        if ($rememberme == "checked") {
+            setcookie('email', $email);
+            setcookie('password', $password);
+        } else {
+            setcookie('email', '');
+            setcookie('password', '');
+        }
+
+        if ($row = mysqli_fetch_assoc($resultLogin)) {
+            $_SESSION['id'] = $row['id'];
+            $email = $row['email'];
+
+            if ($row['usertype'] == 'doctor') {
+                // Save doctor ID in session
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['email'] = $row['email'];
+                header('location:index.html');
+            } elseif ($row['usertype'] == 'patient') {
+                // Redirect to patient page
+                $_SESSION['email'] = $row['email'];
+                header('location:index2.php');
+            }
+        }
+    } else {
+        echo "<script>alert('Incorrect email or password');</script>";
+    }
+}?>
+<?php
+
+// Use the correct namespace
+ use PHPMailer\PHPMailer\PHPMailer;
+ use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+include "connect2.php";
+
+// SIGNUP PROCESS CODE
+if (isset($_POST['register'])) {
+    $otp_str = str_shuffle("0123456789");
+    $otp = substr($otp_str, 0, 5);
+
+    $act_str = rand(100000, 10000000);
+    $activation_code = str_shuffle("abcdefghijklmno" . $act_str);
+
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $usertype = $_POST['usertype'];
+
+    $selectDatabase = "SELECT * FROM registration WHERE email = '$email'";
+    $selectResult = mysqli_query($con, $selectDatabase);
+
+    if (mysqli_num_rows($selectResult) > 0) {
+        // Email already exists
+        echo "<script>alert('Email already registered')</script>";
+    } else {
+        // Check password length
+        if (strlen($password) != 8) {
+            echo "<script>alert('Password must be  8 characters long')</script>";
+        } else {
+            // Email doesn't exist, send OTP and redirect to OTP page
+            $subject = 'Verification code for Verify Your Email Address';
+            $message_body = "For verify your email address, enter this verification code when prompted: $otp.\nSincerely,";
+
+            $mail = new PHPMailer(true);
+
+            try {
+                // Server settings
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'entertainment.pkk@gmail.com'; // your Gmail username
+                $mail->Password   = 'oepcksbqulxlyctf'; // your Gmail password
+                $mail->SMTPSecure = 'ssl';
+                $mail->Port       = 465;
+
+                // Recipients
+                $mail->setFrom('entertainment.pkk@gmail.com', 'Alzheimer');
+                $mail->addAddress($email, $username);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body    = $message_body;
+
+                $mail->send();
+
+                // OTP sent successfully, store details in session and redirect to OTP page
+                $_SESSION['username'] = $username;
+                $_SESSION['email'] = $email;
+                $_SESSION['password'] = $password;
+                $_SESSION['usertype'] = $usertype;
+                $_SESSION['otp'] = $otp;
+                $_SESSION['activation_code'] = $activation_code;
+
+                header("Location: email_verify.php");
+                exit();
+            } catch (Exception $e) {
+                // Error in sending email
+                echo "<script>alert('Failed to send OTP');</script>";
+                echo "Mailer Error: {$mail->ErrorInfo}";
+            }
+        }
+    }
 }
-//else{
-    //$message="Registeraion Successfull...";
-//
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +144,8 @@ if(isset($_SESSION['email_alert'])){
         transform: translateX(0%);
     }
 }
+.hidden {
+            display: none;}
 
 .animate-onload {
     animation: slideInFromLeft 2s ease-out forwards;
@@ -112,66 +225,74 @@ if(isset($_SESSION['email_alert'])){
         <div class="form-box" id="form">
             <div class="button-box">
                 <div id="btn"></div>
-<button type="button" class="toggle-btn" onclick="login()">Log in </button>
-<button type="button" class="toggle-btn" onclick="Register()">Register</button>
-<button type="button" class="close-btn" onclick="closeForm()">X</button> 
-
-        </div>
-        <form id="login" class="input" action="login.php" method="post">
-            <input type ="email" class="input-field" name="email" placeholder="Email" required>
-            <input type ="text" class="input-field"  name="password" placeholder="Password" required>
-            <br><br><br><br>  <br><br><button  type="submit" class="submit">Login</button><br><br><br><br>
-            <p class="styletext">Dont't Have an Account?<br><br><br>Register Now</p>
-        </form>
-        <form id="Register" class="input" action="connect.php" method="post">
-            <center><h3>  <p style="color:red;"><?php echo $message; ?> </p>  </h3> </center>
-            <br>
-        <input type ="text" class="input-field" name="username" placeholder="Username" required>
-            <input type ="email" class="input-field" name="email"placeholder="Email" required>
-            <input type ="password" class="input-field"name="password" placeholder="Password " required>
-            <div class="selecttype">
-                <label>
-                    <input type="radio" name="usertype" value="patient" checked> Patient
-                </label>
-                <label>
-                    <input type="radio" name="usertype" value="doctor"> Doctor
-                </label>
+                <button type="button" class="toggle-btn" onclick="login()">Log in </button>
+                <button type="button" class="toggle-btn" onclick="Register()">Register</button>
+                <button type="button" class="close-btn" onclick="closeForm()">X</button>
             </div>
-            <button  type="submit" class="submit" >Register</button>
-            <br><br><br><p class="styletext">Alrady Have an Account?Login</p class="selecttext"><p>
-            
-        </form>
-        </div> 
-        </div><?php unset($_SESSION['email_alert']);?>
- </body>
-        <script>
-var x = document.getElementById("login");
-var y = document.getElementById("Register");
-var z = document.getElementById("btn");
-
-function Register() {
-x.style.left ="-400px";
-y.style.left ="50px";
-z.style.left ="110px";
-
-}
-
-function login() {
-x.style.left ="-45px";
-y.style.left ="450px";
-z.style.left ="0px";}
-
-function toggleLogin() {
-            var overlay = document.getElementById("overlaylogin");
-            overlay.style.display = "block";
-            login()
-        }
-        function closeForm() {
-    var overlay = document.getElementById("overlaylogin");
-    overlay.style.display = "none";
-}
+            <form id="login" class="input" action=" " method="post">
+                <input type="email" class="input-field" name="email" placeholder="Email"
+                    value="<?php if(isset($_COOKIE['email'])){ echo $_COOKIE['email']; }?>" autocomplete="off" required>
+                <input type="password" class="input-field" name="password" placeholder="Password "
+                    value="<?php if(isset($_COOKIE['password'])){ echo $_COOKIE['password']; }?>" autocomplete="off"
+                    required>
+                <br><br><br><br>
+                <br><br><button type="submit" class="submit" value="login" name="login">Login</button><br><br><br><br>
+                <div class="styletext">
+                    <input type="checkbox" name="rememberme" value="checked"
+                        <?php if(isset($_COOKIE['email'])){ echo 'checked'; }?>><label class="rem">Remember me</label>
+                    <label class="forgot"><a href="forgetpass.php">Forgot Password?</a></label>
+                </div>
+            </form>
+            <form id="Register" class="input" action="" method="post">
+    <br>
+    <input type="text" class="input-field" name="username" placeholder="Username" required>
+    <input type="email" class="input-field" name="email" placeholder="Email" autocomplete="off" required>
+    <input type="password" class="input-field" name="password" placeholder="Password must be exactly 8 characters long" pattern=".{8,}" title="Password must be exactly 8 characters long" required>
+    <div class="selecttype">
+        <label>
+            <input type="radio" name="usertype" value="patient" checked> Patient
+        </label>
+        <label>
+            <input type="radio" name="usertype" value="doctor"> Doctor
+        </label>
+    </div>
+    <button type="submit" class="submit" value="register" name="register">Register</button>
+    <br><br><br>
+    <p class="styletext">Already Have an Account? Login</p>
+</form>
 
 
-</script>
+            <script>
+                var x = document.getElementById("login");
+                var y = document.getElementById("Register");
+                var z = document.getElementById("btn");
+                var verificationForm = document.getElementById("verification");
+
+                function Register() {
+                    x.style.left = "-400px";
+                    y.style.left = "50px";
+                    z.style.left = "110px";
+                }
+
+                function login() {
+                    x.style.left = "-45px";
+                    y.style.left = "450px";
+                    z.style.left = "0px";
+                }
+
+                function toggleLogin() {
+                    var overlay = document.getElementById("overlaylogin");
+                    overlay.style.display = "block";
+                    login();
+                }
+
+                function closeForm() {
+                    var overlay = document.getElementById("overlaylogin");
+                    overlay.style.display = "none";
+                }
+
+
+            </script>
 </body>
+
 </html>
